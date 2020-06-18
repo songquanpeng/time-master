@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -13,9 +15,35 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    virtual void timerEvent(QTimerEvent* event);
+    virtual void closeEvent(QCloseEvent* event);
     ~MainWindow();
+
+public slots:
+    void on_startReminderBtn_clicked();
+    void on_stopReminderBtn_clicked();
+    void on_workTimeSlider_valueChanged(int val);
+    void on_breakTimeSlider_valueChanged(int val);
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
     Ui::MainWindow *ui;
+    int minuteTimer;
+    int minuteCounter;
+    bool isTimerPaused;
+    bool isWorking;
+    bool isDoingTask;
+    int workTimeLength;
+    int breakTimeLength;
+    QAction* controlAction;
+    QAction* stopAction;
+    QAction* restoreAction;
+    QAction* quitAction;
+    QSystemTrayIcon* trayIcon;
+    QMenu* trayIconMenu;
+    void remindUser(QString prompt);
+    void timeLapse();
+    void createActions();
+    void createTrayIcon();
 };
 #endif // MAINWINDOW_H

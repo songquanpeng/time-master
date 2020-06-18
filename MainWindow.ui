@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Time Master</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/image/icon</normaloff>:/image/icon</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
@@ -225,7 +229,7 @@
              <widget class="QLabel" name="label">
               <property name="minimumSize">
                <size>
-                <width>180</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -242,6 +246,12 @@
             </item>
             <item>
              <widget class="QLabel" name="label_2">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -297,10 +307,10 @@
                <number>1</number>
               </property>
               <property name="maximum">
-               <number>100</number>
+               <number>120</number>
               </property>
               <property name="pageStep">
-               <number>5</number>
+               <number>10</number>
               </property>
               <property name="value">
                <number>20</number>
@@ -318,14 +328,26 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="workTimeLabel">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>20 min</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_4">
+             <widget class="QLabel" name="breakTimeLabel">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>20 sec</string>
               </property>
@@ -335,7 +357,7 @@
           </item>
          </layout>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="1" column="1">
          <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -364,7 +386,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="popupCheckbox">
+           <widget class="QCheckBox" name="popupCheckBox">
             <property name="font">
              <font>
               <family>Segoe UI</family>
@@ -373,6 +395,19 @@
             </property>
             <property name="text">
              <string>Pop-up</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="systemTrayCheckBox">
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>System tray</string>
             </property>
            </widget>
           </item>
@@ -391,7 +426,7 @@
           </item>
          </layout>
         </item>
-        <item row="3" column="0">
+        <item row="3" column="1">
          <spacer name="verticalSpacer_4">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -404,7 +439,7 @@
           </property>
          </spacer>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="4" column="0">
          <widget class="QProgressBar" name="timeProgressBar">
           <property name="minimumSize">
            <size>
@@ -423,7 +458,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="5" column="2">
          <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -511,6 +546,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
