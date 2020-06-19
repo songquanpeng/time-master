@@ -21,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     secondCounter = 0;
     workTimeLength = ui->workTimeSlider->value();
     breakTimeLength = ui->breakTimeSlider->value();
-    connect(ui->workTimeSlider, SIGNAL(valueChange(int)), this, SLOT(on_workTimeSlider_valueChanged(int)));
-    connect(ui->breakTimeSlider, SIGNAL(valueChange(int)), this, SLOT(on_breakTimeSlider_valueChanged(int)));
 }
 
 MainWindow::~MainWindow() {

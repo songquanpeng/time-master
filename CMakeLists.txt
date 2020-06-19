@@ -34,7 +34,7 @@ if(ANDROID)
     MainWindow.ui
   )
 else()
-  add_executable(time-master
+  add_executable(time-master WIN32
     main.cpp
     MainWindow.cpp
     MainWindow.h
