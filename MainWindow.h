@@ -29,20 +29,21 @@ public slots:
 private:
     Ui::MainWindow *ui;
     int minuteTimer;
+    int secondTimer;
     int minuteCounter;
+    int secondCounter;
     bool isTimerPaused;
     bool isWorking;
     bool isDoingTask;
     int workTimeLength;
     int breakTimeLength;
-    QAction* controlAction;
-    QAction* stopAction;
-    QAction* restoreAction;
+    QAction* optionsAction;
     QAction* quitAction;
     QSystemTrayIcon* trayIcon;
     QMenu* trayIconMenu;
     void remindUser(QString prompt);
-    void timeLapse();
+    void minuteLapse();
+    void secondLapse();
     void createActions();
     void createTrayIcon();
 };
