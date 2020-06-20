@@ -6,12 +6,17 @@
 #include <QMenu>
 #include <QCloseEvent>
 #include <QSystemTrayIcon>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QTableView>
 #include <cmath>
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     createActions();
     createTrayIcon();
+    initializeTable();
     isWorking = true;
     isDoingTask = false;
     isTimerPaused = true;
@@ -111,6 +116,33 @@ void MainWindow::createTrayIcon() {
     trayIcon->setIcon(QIcon(":/image/icon"));
     trayIcon->setVisible(true);
     trayIcon->show();
+}
+
+void MainWindow::initializeTable() {
+    // Initialse connection
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("data.db");
+    if (!db.open()) {
+        statusBar()->showMessage("Unable to establish a database connection.");
+        return;
+    }
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS 'task' ("
+               "'id'	INTEGER,"
+               "'task_name'	TEXT,"
+               "'time_limit'	INTEGER,"
+               "PRIMARY KEY('id' AUTOINCREMENT)"
+               ");");
+    // Initialize table model
+    model = new QSqlTableModel;
+    model->setTable("task");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Task"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Time"));
+    // Setup UI
+    ui->tableView->setModel(model);
+    ui->tableView->setSortingEnabled(true);
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {

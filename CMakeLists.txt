@@ -25,6 +25,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
+
 
 if(ANDROID)
   add_library(time-master SHARED
@@ -43,4 +45,4 @@ else()
   )
 endif()
 
-target_link_libraries(time-master PRIVATE Qt5::Widgets)
+target_link_libraries(time-master PRIVATE Qt5::Widgets Qt5::Sql)

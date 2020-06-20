@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QSystemTrayIcon>
+#include <QSqlTableModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,10 +42,14 @@ private:
     QAction* quitAction;
     QSystemTrayIcon* trayIcon;
     QMenu* trayIconMenu;
+    QSqlTableModel* model;
+
     void remindUser(QString prompt);
     void minuteLapse();
     void secondLapse();
     void createActions();
     void createTrayIcon();
+    void initializeTable();
+
 };
 #endif // MAINWINDOW_H
