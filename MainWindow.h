@@ -26,6 +26,10 @@ public slots:
     void on_workTimeSlider_valueChanged(int val);
     void on_breakTimeSlider_valueChanged(int val);
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void on_addTaskBtn_clicked();
+    void on_deleteTaskBtn_clicked();
+    void on_startTaskBtn_clicked();
+    void on_stopTaskBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

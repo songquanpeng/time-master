@@ -129,20 +129,22 @@ void MainWindow::initializeTable() {
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS 'task' ("
                "'id'	INTEGER,"
-               "'task_name'	TEXT,"
-               "'time_limit'	INTEGER,"
+               "'task_name'	TEXT DEFAULT 'Study',"
+               "'time_limit'	INTEGER 60,"
                "PRIMARY KEY('id' AUTOINCREMENT)"
                ");");
     // Initialize table model
     model = new QSqlTableModel;
     model->setTable("task");
-    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->setEditStrategy(QSqlTableModel::OnFieldChange);
     model->select();
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Task"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Time"));
     // Setup UI
     ui->tableView->setModel(model);
     ui->tableView->setSortingEnabled(true);
+    ui->tableView->hideColumn(0);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {
@@ -161,5 +163,29 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {
     default:
         break;
     }
+}
+
+void MainWindow::on_addTaskBtn_clicked() {
+    int rowNum = model->rowCount();
+    model->insertRow(rowNum);
+    ui->tableView->scrollToBottom();
+    model->submitAll();
+}
+
+void MainWindow::on_deleteTaskBtn_clicked() {
+    if (QMessageBox::warning(this, "Delete task", "Are you sure delete selected task?",
+                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+        int currentRow = ui->tableView->currentIndex().row();
+        model->removeRow(currentRow);
+        model->select();
+    }
+}
+
+void MainWindow::on_startTaskBtn_clicked() {
+
+}
+
+void MainWindow::on_stopTaskBtn_clicked() {
+
 }
 
