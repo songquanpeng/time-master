@@ -9,7 +9,11 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlRecord>
+#include <QModelIndex>
+#include <QModelIndexList>
 #include <QTableView>
+#include <QSqlField>
 #include <cmath>
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -130,7 +134,7 @@ void MainWindow::initializeTable() {
     query.exec("CREATE TABLE IF NOT EXISTS 'task' ("
                "'id'	INTEGER,"
                "'task_name'	TEXT DEFAULT 'Study',"
-               "'time_limit'	INTEGER 60,"
+               "'time_limit'	INTEGER DEFAULT 60,"
                "PRIMARY KEY('id' AUTOINCREMENT)"
                ");");
     // Initialize table model
@@ -182,6 +186,13 @@ void MainWindow::on_deleteTaskBtn_clicked() {
 }
 
 void MainWindow::on_startTaskBtn_clicked() {
+    if (model->rowCount() == 0) return;
+    int currentRow = ui->tableView->currentIndex().row();
+    if (currentRow == -1) currentRow = 0;
+    auto record = model->record(currentRow);
+    task.description = record.field(1).value().toString();
+    task.timeLimit = record.field(2).value().toInt();
+
 
 }
 

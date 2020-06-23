@@ -1,5 +1,5 @@
 <RCC>
   <qresource prefix="/image">
-    <file alias="icon">resource/time-master.ico</file>
+    <file alias="icon">resource/time-master.png</file>
   </qresource>
 </RCC>

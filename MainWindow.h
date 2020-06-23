@@ -6,6 +6,11 @@
 #include <QSystemTrayIcon>
 #include <QSqlTableModel>
 
+struct Task {
+    QString description;
+    int timeLimit = -1;
+};
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -42,6 +47,8 @@ private:
     bool isDoingTask;
     int workTimeLength;
     int breakTimeLength;
+    Task task;
+
     QAction* optionsAction;
     QAction* quitAction;
     QSystemTrayIcon* trayIcon;
