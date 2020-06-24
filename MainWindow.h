@@ -40,11 +40,14 @@ private:
     Ui::MainWindow *ui;
     int minuteTimer;
     int secondTimer;
-    int minuteCounter;
-    int secondCounter;
-    bool isTimerPaused;
+    int reminderMinuteCounter;
+    int reminderSecondCounter;
+    int taskMinuteCounter;
+    int taskSecondCounter;
     bool isWorking;
     bool isDoingTask;
+    bool isNewTask;
+    bool isReminderWorking;
     int workTimeLength;
     int breakTimeLength;
     Task task;

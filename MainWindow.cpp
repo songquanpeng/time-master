@@ -21,13 +21,16 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createTrayIcon();
     initializeTable();
+    isReminderWorking = false;
     isWorking = true;
     isDoingTask = false;
-    isTimerPaused = true;
+    isNewTask = true;
     minuteTimer = startTimer(60 * 1000);
-    minuteCounter = 0;
     secondTimer = startTimer(1000);
-    secondCounter = 0;
+    reminderMinuteCounter = 0;
+    reminderSecondCounter = 0;
+    taskMinuteCounter = 0;
+    taskSecondCounter = 0;
     workTimeLength = ui->workTimeSlider->value();
     breakTimeLength = ui->breakTimeSlider->value();
 }
@@ -37,31 +40,52 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::timerEvent(QTimerEvent *event) {
-    if (!isTimerPaused) {
-        if (event->timerId() == minuteTimer && isWorking) minuteLapse();
-        if (event->timerId() == secondTimer && !isWorking) secondLapse();
-    }
+    if (event->timerId() == secondTimer) secondLapse();
+    if (event->timerId() == minuteTimer) minuteLapse();
 }
 
 void MainWindow::minuteLapse() {
-    minuteCounter++;
-    ui->timeProgressBar->setValue(ceil(100 * minuteCounter / workTimeLength));
-    if (minuteCounter >= workTimeLength) {
-        minuteCounter = 0;
-        remindUser("Time to take a break.");
-        statusBar()->showMessage("Break time.");
-        isWorking = !isWorking;
+    if (isDoingTask) {
+        taskMinuteCounter--;
+        ui->minuteLCD->display(taskMinuteCounter);
+        if (taskMinuteCounter < 0) {
+            ui->minuteLCD->display(0);
+            ui->secondLCD->display(0);
+            isDoingTask = false;
+            remindUser("Task " + task.description + " has run out of time.");
+        }
     }
+
+    if (isReminderWorking && isWorking) {
+        reminderMinuteCounter++;
+        ui->timeProgressBar->setValue(ceil(100 * reminderMinuteCounter / workTimeLength));
+        if (reminderMinuteCounter >= workTimeLength) {
+            reminderMinuteCounter = 0;
+            remindUser("Time to take a break.");
+            statusBar()->showMessage("Breaking time.");
+            isWorking = !isWorking;
+        }
+    }
+
 }
 
 void MainWindow::secondLapse() {
-    secondCounter++;
-    ui->timeProgressBar->setValue(ceil(100 * secondCounter / breakTimeLength));
-    if (secondCounter >= breakTimeLength) {
-        secondCounter = 0;
-        remindUser("Time to move on.");
-        statusBar()->showMessage("Work time.");
-        isWorking = !isWorking;
+    if (isDoingTask) {
+        taskSecondCounter--;
+        if (taskSecondCounter == -1) taskSecondCounter = 60;
+        ui->secondLCD->display(taskSecondCounter);
+    }
+
+    if (isReminderWorking && !isWorking) {
+        reminderSecondCounter++;
+        ui->timeProgressBar->setValue(ceil(100 * reminderSecondCounter / breakTimeLength));
+        if (reminderSecondCounter >= breakTimeLength) {
+            reminderSecondCounter = 0;
+            remindUser("Time to move on.");
+            statusBar()->showMessage("Working time.");
+            isWorking = !isWorking;
+            ui->timeProgressBar->setValue(0);
+        }
     }
 }
 
@@ -71,19 +95,50 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 }
 
 void MainWindow::on_startReminderBtn_clicked() {
-    isTimerPaused = !isTimerPaused;
-    ui->startReminderBtn->setText(isTimerPaused ? "Start" : "Pause");
-    statusBar()->showMessage(isTimerPaused ? "Timer paused." : (isWorking ? "Work time." : "Break time."));
+    isReminderWorking = !isReminderWorking;
+    ui->startReminderBtn->setText(!isReminderWorking ? "Start" : "Pause");
+    statusBar()->showMessage(!isReminderWorking ? "Timer paused." : (isWorking ? "Working time." : "Breaking time."));
 }
 
 void MainWindow::on_stopReminderBtn_clicked() {
-    isTimerPaused = true;
+    isReminderWorking = false;
+    isWorking = true;
     ui->startReminderBtn->setText("Start");
     ui->timeProgressBar->setValue(0);
-    minuteCounter = 0;
-    secondCounter = 0;
+    reminderMinuteCounter = 0;
+    reminderSecondCounter = 0;
     statusBar()->showMessage("Timer stopped.");
-    isWorking = true;
+}
+
+void MainWindow::on_startTaskBtn_clicked() {
+    if (isNewTask) {
+        if (model->rowCount() == 0) return;
+        int currentRow = ui->tableView->currentIndex().row();
+        if (currentRow == -1) currentRow = 0;
+        auto record = model->record(currentRow);
+        task.description = record.field(1).value().toString();
+        task.timeLimit = record.field(2).value().toInt();
+        taskMinuteCounter = task.timeLimit - 1;
+        taskSecondCounter = 60;
+        isDoingTask = true;
+        isNewTask = false;
+        ui->minuteLCD->display(taskMinuteCounter);
+    } else {
+        isDoingTask = !isDoingTask;
+    }
+    statusBar()->showMessage(isDoingTask ? "Current task: " + task.description : "Task paused");
+    ui->startTaskBtn->setText(isDoingTask ? "Pause" : "Resume");
+}
+
+void MainWindow::on_stopTaskBtn_clicked() {
+    isDoingTask = false;
+    isNewTask = true;
+    ui->startTaskBtn->setText("Start");
+    ui->minuteLCD->display(0);
+    ui->secondLCD->display(0);
+    taskMinuteCounter = 0;
+    taskSecondCounter = 0;
+    statusBar()->showMessage("You have quited current task.");
 }
 
 void MainWindow::on_workTimeSlider_valueChanged(int val) {
@@ -97,7 +152,7 @@ void MainWindow::on_breakTimeSlider_valueChanged(int val) {
 }
 
 void MainWindow::remindUser(QString prompt) {
-    trayIcon->showMessage("Hey", prompt);
+    trayIcon->showMessage("Time Master", prompt);
 }
 
 void MainWindow::createActions() {
@@ -185,18 +240,5 @@ void MainWindow::on_deleteTaskBtn_clicked() {
     }
 }
 
-void MainWindow::on_startTaskBtn_clicked() {
-    if (model->rowCount() == 0) return;
-    int currentRow = ui->tableView->currentIndex().row();
-    if (currentRow == -1) currentRow = 0;
-    auto record = model->record(currentRow);
-    task.description = record.field(1).value().toString();
-    task.timeLimit = record.field(2).value().toInt();
 
-
-}
-
-void MainWindow::on_stopTaskBtn_clicked() {
-
-}
 
