@@ -591,17 +591,30 @@
           <height>0</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font: 75 10pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei UI'; font-size:10pt; font-weight:72; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:18pt; font-weight:600;&quot;&gt;Time Master&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'SimSun'; font-size:18pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:14pt; font-weight:600;&quot;&gt;1. Help you organize daily tasks.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun'; font-size:14pt; font-weight:600;&quot;&gt;2. Remind you to rest regularly.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
        <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>21</x>
           <y>320</y>
-          <width>713</width>
-          <height>44</height>
+          <width>712</width>
+          <height>42</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
@@ -609,45 +622,53 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>408</width>
+             <width>378</width>
              <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <widget class="QPushButton" name="sourceCodeBtn">
-             <property name="font">
-              <font>
-               <family>Segoe UI</family>
-               <pointsize>14</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Source Code</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="checkUpdateBtn">
-             <property name="font">
-              <font>
-               <family>Segoe UI</family>
-               <pointsize>14</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Check Update</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QPushButton" name="sourceCodeBtn">
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>14</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Source Code</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="checkUpdateBtn">
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>14</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Check Update</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

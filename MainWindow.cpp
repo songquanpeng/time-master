@@ -14,6 +14,8 @@
 #include <QModelIndexList>
 #include <QTableView>
 #include <QSqlField>
+#include <QDesktopServices>
+#include <QUrl>
 #include <cmath>
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -139,6 +141,14 @@ void MainWindow::on_stopTaskBtn_clicked() {
     taskMinuteCounter = 0;
     taskSecondCounter = 0;
     statusBar()->showMessage("You have quited current task.");
+}
+
+void MainWindow::on_sourceCodeBtn_clicked() {
+    QDesktopServices::openUrl(QUrl("https://github.com/songquanpeng/time-master"));
+}
+
+void MainWindow::on_checkUpdateBtn_clicked() {
+    QDesktopServices::openUrl(QUrl("https://github.com/songquanpeng/time-master/releases"));
 }
 
 void MainWindow::on_workTimeSlider_valueChanged(int val) {

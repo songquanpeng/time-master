@@ -35,6 +35,8 @@ public slots:
     void on_deleteTaskBtn_clicked();
     void on_startTaskBtn_clicked();
     void on_stopTaskBtn_clicked();
+    void on_sourceCodeBtn_clicked();
+    void on_checkUpdateBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
